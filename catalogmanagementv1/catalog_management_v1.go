@@ -848,6 +848,7 @@ func (catalogManagement *CatalogManagementV1) CreateOffering(createOfferingOptio
 	if createOfferingOptions.NewID != nil {
 		body["id"] = createOfferingOptions.NewID
 	}
+
 	if createOfferingOptions.NewURL != nil {
 		body["url"] = createOfferingOptions.NewURL
 	}
@@ -1213,6 +1214,9 @@ func (catalogManagement *CatalogManagementV1) ReplaceOffering(replaceOfferingOpt
 	body := make(map[string]interface{})
 	if replaceOfferingOptions.NewID != nil {
 		body["id"] = replaceOfferingOptions.NewID
+	}
+	if replaceOfferingOptions.Rev != nil {
+		body["_rev"] = replaceOfferingOptions.Rev
 	}
 	if replaceOfferingOptions.NewURL != nil {
 		body["url"] = replaceOfferingOptions.NewURL
@@ -3565,7 +3569,6 @@ type Account struct {
 	AccountFilters *Filters `json:"account_filters,omitempty"`
 }
 
-
 // UnmarshalAccount unmarshals an instance of Account from the specified map of raw messages.
 func UnmarshalAccount(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Account)
@@ -3589,7 +3592,6 @@ type AccountGroup struct {
 	// Filters for account and catalog filters.
 	AccountFilters *Filters `json:"account_filters,omitempty"`
 }
-
 
 // UnmarshalAccountGroup unmarshals an instance of AccountGroup from the specified map of raw messages.
 func UnmarshalAccountGroup(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -3644,7 +3646,6 @@ type AccumulatedFilters struct {
 	CatalogFilters []AccumulatedFiltersCatalogFiltersItem `json:"catalog_filters,omitempty"`
 }
 
-
 // UnmarshalAccumulatedFilters unmarshals an instance of AccumulatedFilters from the specified map of raw messages.
 func UnmarshalAccumulatedFilters(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(AccumulatedFilters)
@@ -3669,7 +3670,6 @@ type AccumulatedFiltersCatalogFiltersItem struct {
 	Filters *Filters `json:"filters,omitempty"`
 }
 
-
 // UnmarshalAccumulatedFiltersCatalogFiltersItem unmarshals an instance of AccumulatedFiltersCatalogFiltersItem from the specified map of raw messages.
 func UnmarshalAccumulatedFiltersCatalogFiltersItem(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(AccumulatedFiltersCatalogFiltersItem)
@@ -3693,7 +3693,6 @@ type AccumulatedFiltersCatalogFiltersItemCatalog struct {
 	// The name of the catalog.
 	Name *string `json:"name,omitempty"`
 }
-
 
 // UnmarshalAccumulatedFiltersCatalogFiltersItemCatalog unmarshals an instance of AccumulatedFiltersCatalogFiltersItemCatalog from the specified map of raw messages.
 func UnmarshalAccumulatedFiltersCatalogFiltersItemCatalog(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -3721,7 +3720,6 @@ type ApprovalResult struct {
 	// Denotes whether approval has changed.
 	Changed *bool `json:"changed,omitempty"`
 }
-
 
 // UnmarshalApprovalResult unmarshals an instance of ApprovalResult from the specified map of raw messages.
 func UnmarshalApprovalResult(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -3767,8 +3765,8 @@ type CanDeploySchematicsOptions struct {
 func (*CatalogManagementV1) NewCanDeploySchematicsOptions(versionLocatorID string, clusterID string, region string) *CanDeploySchematicsOptions {
 	return &CanDeploySchematicsOptions{
 		VersionLocatorID: core.StringPtr(versionLocatorID),
-		ClusterID: core.StringPtr(clusterID),
-		Region: core.StringPtr(region),
+		ClusterID:        core.StringPtr(clusterID),
+		Region:           core.StringPtr(region),
 	}
 }
 
@@ -3858,7 +3856,6 @@ type Catalog struct {
 	// Feature information.
 	SyndicationSettings *SyndicationResource `json:"syndication_settings,omitempty"`
 }
-
 
 // UnmarshalCatalog unmarshals an instance of Catalog from the specified map of raw messages.
 func UnmarshalCatalog(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -3961,7 +3958,6 @@ type CatalogSearchResult struct {
 	Resources []Catalog `json:"resources,omitempty"`
 }
 
-
 // UnmarshalCatalogSearchResult unmarshals an instance of CatalogSearchResult from the specified map of raw messages.
 func UnmarshalCatalogSearchResult(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(CatalogSearchResult)
@@ -4014,7 +4010,6 @@ type CategoryFilter struct {
 	Filter *FilterTerms `json:"filter,omitempty"`
 }
 
-
 // UnmarshalCategoryFilter unmarshals an instance of CategoryFilter from the specified map of raw messages.
 func UnmarshalCategoryFilter(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(CategoryFilter)
@@ -4047,7 +4042,6 @@ type ClusterInfo struct {
 	// Cluster region.
 	Region *string `json:"region,omitempty"`
 }
-
 
 // UnmarshalClusterInfo unmarshals an instance of ClusterInfo from the specified map of raw messages.
 func UnmarshalClusterInfo(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -4090,7 +4084,6 @@ type ClusterRequestBodySchematics struct {
 	// Resource group to use when creating the schematics workspace.
 	ResourceGroupID *string `json:"resource_group_id,omitempty"`
 }
-
 
 // UnmarshalClusterRequestBodySchematics unmarshals an instance of ClusterRequestBodySchematics from the specified map of raw messages.
 func UnmarshalClusterRequestBodySchematics(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -4144,7 +4137,6 @@ type ClusterSearchResult struct {
 	// Resulting objects.
 	Resources []ClusterInfo `json:"resources,omitempty"`
 }
-
 
 // UnmarshalClusterSearchResult unmarshals an instance of ClusterSearchResult from the specified map of raw messages.
 func UnmarshalClusterSearchResult(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -4227,7 +4219,7 @@ type Configuration struct {
 	Type *string `json:"type,omitempty"`
 
 	// The default value.
-	DefaultValue *string `json:"default_value,omitempty"`
+	DefaultValue *interface{} `json:"default_value,omitempty"`
 
 	// Constraint associated with value, e.g., for string type - regx:[a-z].
 	ValueConstraint *string `json:"value_constraint,omitempty"`
@@ -4244,7 +4236,6 @@ type Configuration struct {
 	// Hide values.
 	Hidden *bool `json:"hidden,omitempty"`
 }
-
 
 // UnmarshalConfiguration unmarshals an instance of Configuration from the specified map of raw messages.
 func UnmarshalConfiguration(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -4605,94 +4596,94 @@ type CreateOfferingOptions struct {
 	CatalogID *string `json:"catalog_id" validate:"required"`
 
 	// unique id.
-	NewID *string `json:"new_id,omitempty"`
+	NewID *string `json:"id,omitempty"`
 
 	// The url for this specific offering.
-	NewURL *string `json:"new_url,omitempty"`
+	NewURL *string `json:"url,omitempty"`
 
 	// The crn for this specific offering.
-	NewCrn *string `json:"new_crn,omitempty"`
+	NewCrn *string `json:"crn,omitempty"`
 
 	// Display Name in the requested language.
-	NewLabel *string `json:"new_label,omitempty"`
+	NewLabel *string `json:"label,omitempty"`
 
 	// The programmatic name of this offering.
-	NewName *string `json:"new_name,omitempty"`
+	NewName *string `json:"name,omitempty"`
 
 	// URL for an icon associated with this offering.
-	NewOfferingIconURL *string `json:"new_offering_icon_url,omitempty"`
+	NewOfferingIconURL *string `json:"offering_icon_url,omitempty"`
 
 	// URL for an additional docs with this offering.
-	NewOfferingDocsURL *string `json:"new_offering_docs_url,omitempty"`
+	NewOfferingDocsURL *string `json:"offering_docs_url,omitempty"`
 
 	// URL to be displayed in the Consumption UI for getting support on this offering.
-	NewOfferingSupportURL *string `json:"new_offering_support_url,omitempty"`
+	NewOfferingSupportURL *string `json:"offering_support_url,omitempty"`
 
 	// List of tags associated with this catalog.
-	NewTags []string `json:"new_tags,omitempty"`
+	NewTags []string `json:"tags,omitempty"`
 
 	// Repository info for offerings.
-	NewRating *Rating `json:"new_rating,omitempty"`
+	NewRating *Rating `json:"rating,omitempty"`
 
 	// The date and time this catalog was created.
-	NewCreated *strfmt.DateTime `json:"new_created,omitempty"`
+	NewCreated *strfmt.DateTime `json:"created,omitempty"`
 
 	// The date and time this catalog was last updated.
-	NewUpdated *strfmt.DateTime `json:"new_updated,omitempty"`
+	NewUpdated *strfmt.DateTime `json:"updated,omitempty"`
 
 	// Short description in the requested language.
-	NewShortDescription *string `json:"new_short_description,omitempty"`
+	NewShortDescription *string `json:"short_description,omitempty"`
 
 	// Long description in the requested language.
-	NewLongDescription *string `json:"new_long_description,omitempty"`
+	NewLongDescription *string `json:"long_description,omitempty"`
 
 	// list of features associated with this offering.
-	NewFeatures []Feature `json:"new_features,omitempty"`
+	NewFeatures []Feature `json:"features,omitempty"`
 
 	// Array of kind.
-	NewKinds []Kind `json:"new_kinds,omitempty"`
+	NewKinds []Kind `json:"kinds,omitempty"`
 
 	// Is it permitted to request publishing to IBM or Public.
-	NewPermitRequestIbmPublicPublish *bool `json:"new_permit_request_ibm_public_publish,omitempty"`
+	NewPermitRequestIbmPublicPublish *bool `json:"permit_request_ibm_public_publish,omitempty"`
 
 	// Indicates if this offering has been approved for use by all IBMers.
-	NewIbmPublishApproved *bool `json:"new_ibm_publish_approved,omitempty"`
+	NewIbmPublishApproved *bool `json:"ibm_publish_approved,omitempty"`
 
 	// Indicates if this offering has been approved for use by all IBM Cloud users.
-	NewPublicPublishApproved *bool `json:"new_public_publish_approved,omitempty"`
+	NewPublicPublishApproved *bool `json:"public_publish_approved,omitempty"`
 
 	// The original offering CRN that this publish entry came from.
-	NewPublicOriginalCrn *string `json:"new_public_original_crn,omitempty"`
+	NewPublicOriginalCrn *string `json:"public_original_crn,omitempty"`
 
 	// The crn of the public catalog entry of this offering.
-	NewPublishPublicCrn *string `json:"new_publish_public_crn,omitempty"`
+	NewPublishPublicCrn *string `json:"publish_public_crn,omitempty"`
 
 	// The portal's approval record ID.
-	NewPortalApprovalRecord *string `json:"new_portal_approval_record,omitempty"`
+	NewPortalApprovalRecord *string `json:"portal_approval_record,omitempty"`
 
 	// The portal UI URL.
-	NewPortalUiURL *string `json:"new_portal_ui_url,omitempty"`
+	NewPortalUiURL *string `json:"portal_ui_url,omitempty"`
 
 	// The id of the catalog containing this offering.
-	NewCatalogID *string `json:"new_catalog_id,omitempty"`
+	NewCatalogID *string `json:"catalog_id,omitempty"`
 
 	// The name of the catalog.
-	NewCatalogName *string `json:"new_catalog_name,omitempty"`
+	NewCatalogName *string `json:"catalog_name,omitempty"`
 
 	// Map of metadata values for this offering.
-	NewMetadata interface{} `json:"new_metadata,omitempty"`
+	NewMetadata interface{} `json:"metadata,omitempty"`
 
 	// A disclaimer for this offering.
-	NewDisclaimer *string `json:"new_disclaimer,omitempty"`
+	NewDisclaimer *string `json:"disclaimer,omitempty"`
 
 	// Determine if this offering should be displayed in the Consumption UI.
-	NewHidden *bool `json:"new_hidden,omitempty"`
+	NewHidden *bool `json:"hidden,omitempty"`
 
 	// Provider of this offering.
-	NewProvider *string `json:"new_provider,omitempty"`
+	NewProvider *string `json:"provider,omitempty"`
 
 	// Repository info for offerings.
-	NewRepoInfo *RepoInfo `json:"new_repo_info,omitempty"`
+	NewRepoInfo *RepoInfo `json:"repo_info,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -4950,10 +4941,10 @@ type DeleteKubeDeployOptions struct {
 func (*CatalogManagementV1) NewDeleteKubeDeployOptions(xAuthRefreshToken string, clusterID string, namespace string, region string, versionLocatorID string) *DeleteKubeDeployOptions {
 	return &DeleteKubeDeployOptions{
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
-		ClusterID: core.StringPtr(clusterID),
-		Namespace: core.StringPtr(namespace),
-		Region: core.StringPtr(region),
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		ClusterID:         core.StringPtr(clusterID),
+		Namespace:         core.StringPtr(namespace),
+		Region:            core.StringPtr(region),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 	}
 }
 
@@ -5045,7 +5036,7 @@ type DeleteOfferingOptions struct {
 // NewDeleteOfferingOptions : Instantiate DeleteOfferingOptions
 func (*CatalogManagementV1) NewDeleteOfferingOptions(catalogID string, offeringID string) *DeleteOfferingOptions {
 	return &DeleteOfferingOptions{
-		CatalogID: core.StringPtr(catalogID),
+		CatalogID:  core.StringPtr(catalogID),
 		OfferingID: core.StringPtr(offeringID),
 	}
 }
@@ -5105,7 +5096,6 @@ type DeployRequirementsCheck struct {
 	Install interface{} `json:"install,omitempty"`
 }
 
-
 // UnmarshalDeployRequirementsCheck unmarshals an instance of DeployRequirementsCheck from the specified map of raw messages.
 func UnmarshalDeployRequirementsCheck(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(DeployRequirementsCheck)
@@ -5150,7 +5140,6 @@ type Deployment struct {
 	// the date'time this catalog was last updated.
 	Updated *strfmt.DateTime `json:"updated,omitempty"`
 }
-
 
 // UnmarshalDeployment unmarshals an instance of Deployment from the specified map of raw messages.
 func UnmarshalDeployment(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -5235,7 +5224,6 @@ type Enterprise struct {
 	AccountGroups *EnterpriseAccountGroups `json:"account_groups,omitempty"`
 }
 
-
 // UnmarshalEnterprise unmarshals an instance of Enterprise from the specified map of raw messages.
 func UnmarshalEnterprise(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Enterprise)
@@ -5261,7 +5249,6 @@ type EnterpriseAccountGroups struct {
 	Keys *AccountGroup `json:"keys,omitempty"`
 }
 
-
 // UnmarshalEnterpriseAccountGroups unmarshals an instance of EnterpriseAccountGroups from the specified map of raw messages.
 func UnmarshalEnterpriseAccountGroups(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(EnterpriseAccountGroups)
@@ -5281,7 +5268,6 @@ type Feature struct {
 	// Feature description.
 	Description *string `json:"description,omitempty"`
 }
-
 
 // UnmarshalFeature unmarshals an instance of Feature from the specified map of raw messages.
 func UnmarshalFeature(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -5304,7 +5290,6 @@ type FilterTerms struct {
 	// included. If include is false, then if the offering has one of the values then the offering is excluded.
 	FilterTerms []string `json:"filter_terms,omitempty"`
 }
-
 
 // UnmarshalFilterTerms unmarshals an instance of FilterTerms from the specified map of raw messages.
 func UnmarshalFilterTerms(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -5330,7 +5315,6 @@ type Filters struct {
 	// Filter on offering ID's. There is an include filter and an exclule filter. Both can be set.
 	IdFilters *IDFilter `json:"id_filters,omitempty"`
 }
-
 
 // UnmarshalFilters unmarshals an instance of Filters from the specified map of raw messages.
 func UnmarshalFilters(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -5441,8 +5425,8 @@ type GetClusterOptions struct {
 // NewGetClusterOptions : Instantiate GetClusterOptions
 func (*CatalogManagementV1) NewGetClusterOptions(clusterID string, region string, xAuthRefreshToken string) *GetClusterOptions {
 	return &GetClusterOptions{
-		ClusterID: core.StringPtr(clusterID),
-		Region: core.StringPtr(region),
+		ClusterID:         core.StringPtr(clusterID),
+		Region:            core.StringPtr(region),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -5497,9 +5481,9 @@ type GetConsumptionOfferingsOptions struct {
 // What should be selected. Default is 'all' which will return both public and private offerings. 'public' returns only
 // the public offerings and 'private' returns only the private offerings.
 const (
-	GetConsumptionOfferingsOptions_Select_All = "all"
+	GetConsumptionOfferingsOptions_Select_All     = "all"
 	GetConsumptionOfferingsOptions_Select_Private = "private"
-	GetConsumptionOfferingsOptions_Select_Public = "public"
+	GetConsumptionOfferingsOptions_Select_Public  = "public"
 )
 
 // NewGetConsumptionOfferingsOptions : Instantiate GetConsumptionOfferingsOptions
@@ -5717,8 +5701,8 @@ type GetNamespacesOptions struct {
 // NewGetNamespacesOptions : Instantiate GetNamespacesOptions
 func (*CatalogManagementV1) NewGetNamespacesOptions(clusterID string, region string, xAuthRefreshToken string) *GetNamespacesOptions {
 	return &GetNamespacesOptions{
-		ClusterID: core.StringPtr(clusterID),
-		Region: core.StringPtr(region),
+		ClusterID:         core.StringPtr(clusterID),
+		Region:            core.StringPtr(region),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -5774,7 +5758,7 @@ type GetOfferingOptions struct {
 // NewGetOfferingOptions : Instantiate GetOfferingOptions
 func (*CatalogManagementV1) NewGetOfferingOptions(catalogID string, offeringID string) *GetOfferingOptions {
 	return &GetOfferingOptions{
-		CatalogID: core.StringPtr(catalogID),
+		CatalogID:  core.StringPtr(catalogID),
 		OfferingID: core.StringPtr(offeringID),
 	}
 }
@@ -5849,7 +5833,7 @@ type GetPreinstallOptions struct {
 // NewGetPreinstallOptions : Instantiate GetPreinstallOptions
 func (*CatalogManagementV1) NewGetPreinstallOptions(versionLocatorID string, xAuthRefreshToken string) *GetPreinstallOptions {
 	return &GetPreinstallOptions{
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -5906,7 +5890,7 @@ type GetRepoOptions struct {
 // NewGetRepoOptions : Instantiate GetRepoOptions
 func (*CatalogManagementV1) NewGetRepoOptions(typeVar string, charturl string) *GetRepoOptions {
 	return &GetRepoOptions{
-		Type: core.StringPtr(typeVar),
+		Type:     core.StringPtr(typeVar),
 		Charturl: core.StringPtr(charturl),
 	}
 }
@@ -5944,7 +5928,7 @@ type GetReposOptions struct {
 // NewGetReposOptions : Instantiate GetReposOptions
 func (*CatalogManagementV1) NewGetReposOptions(typeVar string, repourl string) *GetReposOptions {
 	return &GetReposOptions{
-		Type: core.StringPtr(typeVar),
+		Type:    core.StringPtr(typeVar),
 		Repourl: core.StringPtr(repourl),
 	}
 }
@@ -6000,7 +5984,7 @@ type GetSchematicsWorkspacesOptions struct {
 // NewGetSchematicsWorkspacesOptions : Instantiate GetSchematicsWorkspacesOptions
 func (*CatalogManagementV1) NewGetSchematicsWorkspacesOptions(versionLocatorID string, xAuthRefreshToken string) *GetSchematicsWorkspacesOptions {
 	return &GetSchematicsWorkspacesOptions{
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -6038,7 +6022,7 @@ type GetValidationStatusOptions struct {
 // NewGetValidationStatusOptions : Instantiate GetValidationStatusOptions
 func (*CatalogManagementV1) NewGetValidationStatusOptions(versionLocatorID string, xAuthRefreshToken string) *GetValidationStatusOptions {
 	return &GetValidationStatusOptions{
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -6133,7 +6117,7 @@ type GetVersionLicenseOptions struct {
 func (*CatalogManagementV1) NewGetVersionLicenseOptions(versionLocatorID string, licenseID string) *GetVersionLicenseOptions {
 	return &GetVersionLicenseOptions{
 		VersionLocatorID: core.StringPtr(versionLocatorID),
-		LicenseID: core.StringPtr(licenseID),
+		LicenseID:        core.StringPtr(licenseID),
 	}
 }
 
@@ -6293,7 +6277,6 @@ type HelmChart struct {
 	AppVersion *string `json:"appVersion,omitempty"`
 }
 
-
 // UnmarshalHelmChart unmarshals an instance of HelmChart from the specified map of raw messages.
 func UnmarshalHelmChart(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(HelmChart)
@@ -6327,7 +6310,6 @@ type HelmPackage struct {
 	Chart *HelmPackageChart `json:"chart,omitempty"`
 }
 
-
 // UnmarshalHelmPackage unmarshals an instance of HelmPackage from the specified map of raw messages.
 func UnmarshalHelmPackage(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(HelmPackage)
@@ -6356,7 +6338,6 @@ type HelmPackageChart struct {
 	// License metadata.
 	LicenseMetadata interface{} `json:"license-metadata,omitempty"`
 }
-
 
 // UnmarshalHelmPackageChart unmarshals an instance of HelmPackageChart from the specified map of raw messages.
 func UnmarshalHelmPackageChart(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -6390,7 +6371,6 @@ type HelmRepoList struct {
 	// A chart entry in the repo. This response will contain many chart names.
 	Chart *HelmRepoListChart `json:"chart,omitempty"`
 }
-
 
 // UnmarshalHelmRepoList unmarshals an instance of HelmRepoList from the specified map of raw messages.
 func UnmarshalHelmRepoList(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -6450,7 +6430,6 @@ type HelmRepoListChart struct {
 	// Application version.
 	AppVersion *string `json:"appVersion,omitempty"`
 }
-
 
 // UnmarshalHelmRepoListChart unmarshals an instance of HelmRepoListChart from the specified map of raw messages.
 func UnmarshalHelmRepoListChart(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -6528,7 +6507,6 @@ type IDFilter struct {
 	Exclude *FilterTerms `json:"exclude,omitempty"`
 }
 
-
 // UnmarshalIDFilter unmarshals an instance of IDFilter from the specified map of raw messages.
 func UnmarshalIDFilter(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(IDFilter)
@@ -6578,7 +6556,6 @@ type Image struct {
 	Image *string `json:"image,omitempty"`
 }
 
-
 // UnmarshalImage unmarshals an instance of Image from the specified map of raw messages.
 func UnmarshalImage(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Image)
@@ -6598,7 +6575,6 @@ type ImageManifest struct {
 	// List of images.
 	Images []Image `json:"images,omitempty"`
 }
-
 
 // UnmarshalImageManifest unmarshals an instance of ImageManifest from the specified map of raw messages.
 func UnmarshalImageManifest(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -6637,7 +6613,7 @@ type ImportOfferingOptions struct {
 func (*CatalogManagementV1) NewImportOfferingOptions(catalogID string, zipurl string) *ImportOfferingOptions {
 	return &ImportOfferingOptions{
 		CatalogID: core.StringPtr(catalogID),
-		Zipurl: core.StringPtr(zipurl),
+		Zipurl:    core.StringPtr(zipurl),
 	}
 }
 
@@ -6695,9 +6671,9 @@ type ImportOfferingVersionOptions struct {
 // NewImportOfferingVersionOptions : Instantiate ImportOfferingVersionOptions
 func (*CatalogManagementV1) NewImportOfferingVersionOptions(catalogID string, offeringID string, zipurl string) *ImportOfferingVersionOptions {
 	return &ImportOfferingVersionOptions{
-		CatalogID: core.StringPtr(catalogID),
+		CatalogID:  core.StringPtr(catalogID),
 		OfferingID: core.StringPtr(offeringID),
-		Zipurl: core.StringPtr(zipurl),
+		Zipurl:     core.StringPtr(zipurl),
 	}
 }
 
@@ -6749,7 +6725,6 @@ type InstallStatus struct {
 	ContentMgmt *InstallStatusContentMgmt `json:"content_mgmt,omitempty"`
 }
 
-
 // UnmarshalInstallStatus unmarshals an instance of InstallStatus from the specified map of raw messages.
 func UnmarshalInstallStatus(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(InstallStatus)
@@ -6777,7 +6752,6 @@ type InstallStatusContentMgmt struct {
 	// Errors.
 	Errors []interface{} `json:"errors,omitempty"`
 }
-
 
 // UnmarshalInstallStatusContentMgmt unmarshals an instance of InstallStatusContentMgmt from the specified map of raw messages.
 func UnmarshalInstallStatusContentMgmt(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -6811,7 +6785,6 @@ type InstallStatusMetadata struct {
 	// Workspace name.
 	WorkspaceName *string `json:"workspace_name,omitempty"`
 }
-
 
 // UnmarshalInstallStatusMetadata unmarshals an instance of InstallStatusMetadata from the specified map of raw messages.
 func UnmarshalInstallStatusMetadata(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -6858,7 +6831,6 @@ type InstallStatusRelease struct {
 	Errors []interface{} `json:"errors,omitempty"`
 }
 
-
 // UnmarshalInstallStatusRelease unmarshals an instance of InstallStatusRelease from the specified map of raw messages.
 func UnmarshalInstallStatusRelease(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(InstallStatusRelease)
@@ -6895,31 +6867,31 @@ type InstallVersionOptions struct {
 	XAuthRefreshToken *string `json:"X-Auth-Refresh-Token" validate:"required"`
 
 	// Cluster ID.
-	NewClusterID *string `json:"new_cluster_id,omitempty"`
+	NewClusterID *string `json:"cluster_id,omitempty"`
 
 	// Cluster region.
-	NewRegion *string `json:"new_region,omitempty"`
+	NewRegion *string `json:"region,omitempty"`
 
 	// Kube namespace.
-	NewNamespace *string `json:"new_namespace,omitempty"`
+	NewNamespace *string `json:"namespace,omitempty"`
 
 	// Object containing Helm chart override values.
-	NewOverrideValues interface{} `json:"new_override_values,omitempty"`
+	NewOverrideValues interface{} `json:"override_values,omitempty"`
 
 	// Entitlement API Key for this offering.
-	NewEntitlementApikey *string `json:"new_entitlement_apikey,omitempty"`
+	NewEntitlementApikey *string `json:"entitlement_apikey,omitempty"`
 
 	// Schematics workspace configuration.
-	NewSchematics *ClusterRequestBodySchematics `json:"new_schematics,omitempty"`
+	NewSchematics *ClusterRequestBodySchematics `json:"schematics,omitempty"`
 
 	// Script.
-	NewScript *string `json:"new_script,omitempty"`
+	NewScript *string `json:"script,omitempty"`
 
 	// Script ID.
-	NewScriptID *string `json:"new_script_id,omitempty"`
+	NewScriptID *string `json:"script_id,omitempty"`
 
 	// Version locator ID.
-	NewVersionLocatorID *string `json:"new_version_locator_id,omitempty"`
+	NewVersionLocatorID *string `json:"version_locator_id,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -6928,7 +6900,7 @@ type InstallVersionOptions struct {
 // NewInstallVersionOptions : Instantiate InstallVersionOptions
 func (*CatalogManagementV1) NewInstallVersionOptions(versionLocatorID string, xAuthRefreshToken string) *InstallVersionOptions {
 	return &InstallVersionOptions{
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -7041,7 +7013,6 @@ type Kind struct {
 	Plans []Plan `json:"plans,omitempty"`
 }
 
-
 // UnmarshalKind unmarshals an instance of Kind from the specified map of raw messages.
 func UnmarshalKind(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Kind)
@@ -7120,7 +7091,6 @@ type KubeDeployResult struct {
 	CatalogID *string `json:"catalog_id,omitempty"`
 }
 
-
 // UnmarshalKubeDeployResult unmarshals an instance of KubeDeployResult from the specified map of raw messages.
 func UnmarshalKubeDeployResult(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(KubeDeployResult)
@@ -7177,7 +7147,6 @@ type License struct {
 	// License description.
 	Description *string `json:"description,omitempty"`
 }
-
 
 // UnmarshalLicense unmarshals an instance of License from the specified map of raw messages.
 func UnmarshalLicense(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -7286,7 +7255,6 @@ type LicenseEntitlement struct {
 	// Array of license offering references.
 	OfferingList []LicenseOfferingReference `json:"offering_list,omitempty"`
 }
-
 
 // UnmarshalLicenseEntitlement unmarshals an instance of LicenseEntitlement from the specified map of raw messages.
 func UnmarshalLicenseEntitlement(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -7411,7 +7379,6 @@ type LicenseEntitlementHistoryItem struct {
 	Date *string `json:"date,omitempty"`
 }
 
-
 // UnmarshalLicenseEntitlementHistoryItem unmarshals an instance of LicenseEntitlementHistoryItem from the specified map of raw messages.
 func UnmarshalLicenseEntitlementHistoryItem(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(LicenseEntitlementHistoryItem)
@@ -7448,7 +7415,6 @@ type LicenseEntitlements struct {
 	// Resulting Entitlement objects.
 	Resources []LicenseEntitlement `json:"resources,omitempty"`
 }
-
 
 // UnmarshalLicenseEntitlements unmarshals an instance of LicenseEntitlements from the specified map of raw messages.
 func UnmarshalLicenseEntitlements(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -7527,7 +7493,6 @@ type LicenseObject struct {
 	// Array of license offering references.
 	OfferingList []LicenseOfferingReference `json:"offering_list,omitempty"`
 }
-
 
 // UnmarshalLicenseObject unmarshals an instance of LicenseObject from the specified map of raw messages.
 func UnmarshalLicenseObject(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -7621,7 +7586,6 @@ type LicenseOfferingReference struct {
 	CatalogID *string `json:"catalog_id,omitempty"`
 }
 
-
 // UnmarshalLicenseOfferingReference unmarshals an instance of LicenseOfferingReference from the specified map of raw messages.
 func UnmarshalLicenseOfferingReference(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(LicenseOfferingReference)
@@ -7686,7 +7650,6 @@ type LicenseProvider struct {
 	// State of license provider.
 	State *string `json:"state,omitempty"`
 }
-
 
 // UnmarshalLicenseProvider unmarshals an instance of LicenseProvider from the specified map of raw messages.
 func UnmarshalLicenseProvider(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -7753,7 +7716,6 @@ type LicenseProviders struct {
 	Resources []LicenseProvider `json:"resources,omitempty"`
 }
 
-
 // UnmarshalLicenseProviders unmarshals an instance of LicenseProviders from the specified map of raw messages.
 func UnmarshalLicenseProviders(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(LicenseProviders)
@@ -7798,7 +7760,6 @@ type Licenses struct {
 	// Resulting License objects.
 	Resources []LicenseObject `json:"resources,omitempty"`
 }
-
 
 // UnmarshalLicenses unmarshals an instance of Licenses from the specified map of raw messages.
 func UnmarshalLicenses(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -7914,10 +7875,10 @@ type ListKubeDeployOptions struct {
 func (*CatalogManagementV1) NewListKubeDeployOptions(xAuthRefreshToken string, clusterID string, namespace string, region string, versionLocatorID string) *ListKubeDeployOptions {
 	return &ListKubeDeployOptions{
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
-		ClusterID: core.StringPtr(clusterID),
-		Namespace: core.StringPtr(namespace),
-		Region: core.StringPtr(region),
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		ClusterID:         core.StringPtr(clusterID),
+		Namespace:         core.StringPtr(namespace),
+		Region:            core.StringPtr(region),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 	}
 }
 
@@ -8086,7 +8047,6 @@ type Maintainers struct {
 	Name *string `json:"name,omitempty"`
 }
 
-
 // UnmarshalMaintainers unmarshals an instance of Maintainers from the specified map of raw messages.
 func UnmarshalMaintainers(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Maintainers)
@@ -8131,7 +8091,6 @@ type NamespaceSearchResult struct {
 	// Resulting objects.
 	Resources []string `json:"resources,omitempty"`
 }
-
 
 // UnmarshalNamespaceSearchResult unmarshals an instance of NamespaceSearchResult from the specified map of raw messages.
 func UnmarshalNamespaceSearchResult(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -8180,6 +8139,8 @@ func UnmarshalNamespaceSearchResult(m map[string]json.RawMessage, result interfa
 type Offering struct {
 	// unique id.
 	ID *string `json:"id,omitempty"`
+
+	Rev *string `json:"_rev,omitempty"`
 
 	// The url for this specific offering.
 	URL *string `json:"url,omitempty"`
@@ -8269,11 +8230,14 @@ type Offering struct {
 	RepoInfo *RepoInfo `json:"repo_info,omitempty"`
 }
 
-
 // UnmarshalOffering unmarshals an instance of Offering from the specified map of raw messages.
 func UnmarshalOffering(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Offering)
 	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
+	if err != nil {
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "_rev", &obj.Rev)
 	if err != nil {
 		return
 	}
@@ -8427,7 +8391,6 @@ type OfferingSearchResult struct {
 	Resources []Offering `json:"resources,omitempty"`
 }
 
-
 // UnmarshalOfferingSearchResult unmarshals an instance of OfferingSearchResult from the specified map of raw messages.
 func UnmarshalOfferingSearchResult(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(OfferingSearchResult)
@@ -8507,7 +8470,6 @@ type Plan struct {
 	Deployments []Deployment `json:"deployments,omitempty"`
 }
 
-
 // UnmarshalPlan unmarshals an instance of Plan from the specified map of raw messages.
 func UnmarshalPlan(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Plan)
@@ -8568,31 +8530,31 @@ type PreinstallVersionOptions struct {
 	XAuthRefreshToken *string `json:"X-Auth-Refresh-Token" validate:"required"`
 
 	// Cluster ID.
-	NewClusterID *string `json:"new_cluster_id,omitempty"`
+	NewClusterID *string `json:"cluster_id,omitempty"`
 
 	// Cluster region.
-	NewRegion *string `json:"new_region,omitempty"`
+	NewRegion *string `json:"region,omitempty"`
 
 	// Kube namespace.
-	NewNamespace *string `json:"new_namespace,omitempty"`
+	NewNamespace *string `json:"namespace,omitempty"`
 
 	// Object containing Helm chart override values.
-	NewOverrideValues interface{} `json:"new_override_values,omitempty"`
+	NewOverrideValues interface{} `json:"override_values,omitempty"`
 
 	// Entitlement API Key for this offering.
-	NewEntitlementApikey *string `json:"new_entitlement_apikey,omitempty"`
+	NewEntitlementApikey *string `json:"entitlement_apikey,omitempty"`
 
 	// Schematics workspace configuration.
-	NewSchematics *ClusterRequestBodySchematics `json:"new_schematics,omitempty"`
+	NewSchematics *ClusterRequestBodySchematics `json:"schematics,omitempty"`
 
 	// Script.
-	NewScript *string `json:"new_script,omitempty"`
+	NewScript *string `json:"script,omitempty"`
 
 	// Script ID.
-	NewScriptID *string `json:"new_script_id,omitempty"`
+	NewScriptID *string `json:"script_id,omitempty"`
 
 	// Version locator ID.
-	NewVersionLocatorID *string `json:"new_version_locator_id,omitempty"`
+	NewVersionLocatorID *string `json:"version_locator_id,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -8601,7 +8563,7 @@ type PreinstallVersionOptions struct {
 // NewPreinstallVersionOptions : Instantiate PreinstallVersionOptions
 func (*CatalogManagementV1) NewPreinstallVersionOptions(versionLocatorID string, xAuthRefreshToken string) *PreinstallVersionOptions {
 	return &PreinstallVersionOptions{
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -8721,7 +8683,6 @@ type Rating struct {
 	FourStarCount *int64 `json:"four_star_count,omitempty"`
 }
 
-
 // UnmarshalRating unmarshals an instance of Rating from the specified map of raw messages.
 func UnmarshalRating(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Rating)
@@ -8766,9 +8727,9 @@ type ReloadOfferingOptions struct {
 // NewReloadOfferingOptions : Instantiate ReloadOfferingOptions
 func (*CatalogManagementV1) NewReloadOfferingOptions(catalogID string, offeringID string, zipurl string, targetVersion string) *ReloadOfferingOptions {
 	return &ReloadOfferingOptions{
-		CatalogID: core.StringPtr(catalogID),
-		OfferingID: core.StringPtr(offeringID),
-		Zipurl: core.StringPtr(zipurl),
+		CatalogID:     core.StringPtr(catalogID),
+		OfferingID:    core.StringPtr(offeringID),
+		Zipurl:        core.StringPtr(zipurl),
 		TargetVersion: core.StringPtr(targetVersion),
 	}
 }
@@ -9112,9 +9073,9 @@ type ReplaceOfferingIconOptions struct {
 // NewReplaceOfferingIconOptions : Instantiate ReplaceOfferingIconOptions
 func (*CatalogManagementV1) NewReplaceOfferingIconOptions(catalogID string, offeringID string, fileName string) *ReplaceOfferingIconOptions {
 	return &ReplaceOfferingIconOptions{
-		CatalogID: core.StringPtr(catalogID),
+		CatalogID:  core.StringPtr(catalogID),
 		OfferingID: core.StringPtr(offeringID),
-		FileName: core.StringPtr(fileName),
+		FileName:   core.StringPtr(fileName),
 	}
 }
 
@@ -9147,98 +9108,100 @@ type ReplaceOfferingOptions struct {
 	// Catalog identification.
 	CatalogID *string `json:"catalog_id" validate:"required"`
 
+	Rev *string `json:"_rev" validate:"required"`
+
 	// Offering identification.
 	OfferingID *string `json:"offering_id" validate:"required"`
 
 	// unique id.
-	NewID *string `json:"new_id,omitempty"`
+	NewID *string `json:"id,omitempty"`
 
 	// The url for this specific offering.
-	NewURL *string `json:"new_url,omitempty"`
+	NewURL *string `json:"url,omitempty"`
 
 	// The crn for this specific offering.
-	NewCrn *string `json:"new_crn,omitempty"`
+	NewCrn *string `json:"crn,omitempty"`
 
 	// Display Name in the requested language.
-	NewLabel *string `json:"new_label,omitempty"`
+	NewLabel *string `json:"label,omitempty"`
 
 	// The programmatic name of this offering.
-	NewName *string `json:"new_name,omitempty"`
+	NewName *string `json:"name,omitempty"`
 
 	// URL for an icon associated with this offering.
-	NewOfferingIconURL *string `json:"new_offering_icon_url,omitempty"`
+	NewOfferingIconURL *string `json:"offering_icon_url,omitempty"`
 
 	// URL for an additional docs with this offering.
-	NewOfferingDocsURL *string `json:"new_offering_docs_url,omitempty"`
+	NewOfferingDocsURL *string `json:"offering_docs_url,omitempty"`
 
 	// URL to be displayed in the Consumption UI for getting support on this offering.
-	NewOfferingSupportURL *string `json:"new_offering_support_url,omitempty"`
+	NewOfferingSupportURL *string `json:"offering_support_url,omitempty"`
 
 	// List of tags associated with this catalog.
-	NewTags []string `json:"new_tags,omitempty"`
+	NewTags []string `json:"tags,omitempty"`
 
 	// Repository info for offerings.
-	NewRating *Rating `json:"new_rating,omitempty"`
+	NewRating *Rating `json:"rating,omitempty"`
 
 	// The date and time this catalog was created.
-	NewCreated *strfmt.DateTime `json:"new_created,omitempty"`
+	NewCreated *strfmt.DateTime `json:"created,omitempty"`
 
 	// The date and time this catalog was last updated.
-	NewUpdated *strfmt.DateTime `json:"new_updated,omitempty"`
+	NewUpdated *strfmt.DateTime `json:"updated,omitempty"`
 
 	// Short description in the requested language.
-	NewShortDescription *string `json:"new_short_description,omitempty"`
+	NewShortDescription *string `json:"short_description,omitempty"`
 
 	// Long description in the requested language.
-	NewLongDescription *string `json:"new_long_description,omitempty"`
+	NewLongDescription *string `json:"long_description,omitempty"`
 
 	// list of features associated with this offering.
-	NewFeatures []Feature `json:"new_features,omitempty"`
+	NewFeatures []Feature `json:"features,omitempty"`
 
 	// Array of kind.
-	NewKinds []Kind `json:"new_kinds,omitempty"`
+	NewKinds []Kind `json:"kinds,omitempty"`
 
 	// Is it permitted to request publishing to IBM or Public.
-	NewPermitRequestIbmPublicPublish *bool `json:"new_permit_request_ibm_public_publish,omitempty"`
+	NewPermitRequestIbmPublicPublish *bool `json:"permit_request_ibm_public_publish,omitempty"`
 
 	// Indicates if this offering has been approved for use by all IBMers.
-	NewIbmPublishApproved *bool `json:"new_ibm_publish_approved,omitempty"`
+	NewIbmPublishApproved *bool `json:"ibm_publish_approved,omitempty"`
 
 	// Indicates if this offering has been approved for use by all IBM Cloud users.
-	NewPublicPublishApproved *bool `json:"new_public_publish_approved,omitempty"`
+	NewPublicPublishApproved *bool `json:"public_publish_approved,omitempty"`
 
 	// The original offering CRN that this publish entry came from.
-	NewPublicOriginalCrn *string `json:"new_public_original_crn,omitempty"`
+	NewPublicOriginalCrn *string `json:"public_original_crn,omitempty"`
 
 	// The crn of the public catalog entry of this offering.
-	NewPublishPublicCrn *string `json:"new_publish_public_crn,omitempty"`
+	NewPublishPublicCrn *string `json:"publish_public_crn,omitempty"`
 
 	// The portal's approval record ID.
-	NewPortalApprovalRecord *string `json:"new_portal_approval_record,omitempty"`
+	NewPortalApprovalRecord *string `json:"portal_approval_record,omitempty"`
 
 	// The portal UI URL.
-	NewPortalUiURL *string `json:"new_portal_ui_url,omitempty"`
+	NewPortalUiURL *string `json:"portal_ui_url,omitempty"`
 
 	// The id of the catalog containing this offering.
-	NewCatalogID *string `json:"new_catalog_id,omitempty"`
+	NewCatalogID *string `json:"catalog_id,omitempty"`
 
 	// The name of the catalog.
-	NewCatalogName *string `json:"new_catalog_name,omitempty"`
+	NewCatalogName *string `json:"catalog_name,omitempty"`
 
 	// Map of metadata values for this offering.
-	NewMetadata interface{} `json:"new_metadata,omitempty"`
+	NewMetadata interface{} `json:"metadata,omitempty"`
 
 	// A disclaimer for this offering.
-	NewDisclaimer *string `json:"new_disclaimer,omitempty"`
+	NewDisclaimer *string `json:"disclaimer,omitempty"`
 
 	// Determine if this offering should be displayed in the Consumption UI.
-	NewHidden *bool `json:"new_hidden,omitempty"`
+	NewHidden *bool `json:"hidden,omitempty"`
 
 	// Provider of this offering.
-	NewProvider *string `json:"new_provider,omitempty"`
+	NewProvider *string `json:"provider,omitempty"`
 
 	// Repository info for offerings.
-	NewRepoInfo *RepoInfo `json:"new_repo_info,omitempty"`
+	NewRepoInfo *RepoInfo `json:"repo_info,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -9247,7 +9210,7 @@ type ReplaceOfferingOptions struct {
 // NewReplaceOfferingOptions : Instantiate ReplaceOfferingOptions
 func (*CatalogManagementV1) NewReplaceOfferingOptions(catalogID string, offeringID string) *ReplaceOfferingOptions {
 	return &ReplaceOfferingOptions{
-		CatalogID: core.StringPtr(catalogID),
+		CatalogID:  core.StringPtr(catalogID),
 		OfferingID: core.StringPtr(offeringID),
 	}
 }
@@ -9339,6 +9302,11 @@ func (options *ReplaceOfferingOptions) SetNewUpdated(newUpdated *strfmt.DateTime
 // SetNewShortDescription : Allow user to set NewShortDescription
 func (options *ReplaceOfferingOptions) SetNewShortDescription(newShortDescription string) *ReplaceOfferingOptions {
 	options.NewShortDescription = core.StringPtr(newShortDescription)
+	return options
+}
+
+func (options *ReplaceOfferingOptions) SetNewRev(rev string) *ReplaceOfferingOptions {
+	options.Rev = core.StringPtr(rev)
 	return options
 }
 
@@ -9459,7 +9427,6 @@ type RepoInfo struct {
 	Type *string `json:"type,omitempty"`
 }
 
-
 // UnmarshalRepoInfo unmarshals an instance of RepoInfo from the specified map of raw messages.
 func UnmarshalRepoInfo(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(RepoInfo)
@@ -9481,19 +9448,18 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 
 	// mem, disk, cores, and nodes can be parsed as an int.  targetVersion will be a semver range value.
-	Value *string `json:"value,omitempty"`
+	Value *interface{} `json:"value,omitempty"`
 }
 
 // Constants associated with the Resource.Type property.
 // Type of requirement.
 const (
-	Resource_Type_Cores = "cores"
-	Resource_Type_Disk = "disk"
-	Resource_Type_Mem = "mem"
-	Resource_Type_Nodes = "nodes"
+	Resource_Type_Cores         = "cores"
+	Resource_Type_Disk          = "disk"
+	Resource_Type_Mem           = "mem"
+	Resource_Type_Nodes         = "nodes"
 	Resource_Type_Targetversion = "targetVersion"
 )
-
 
 // UnmarshalResource unmarshals an instance of Resource from the specified map of raw messages.
 func UnmarshalResource(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -9530,7 +9496,6 @@ type ResourceGroup struct {
 	// Indicates if this Resource Group is active or not.
 	Default *bool `json:"default,omitempty"`
 }
-
 
 // UnmarshalResourceGroup unmarshals an instance of ResourceGroup from the specified map of raw messages.
 func UnmarshalResourceGroup(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -9593,7 +9558,6 @@ type ResourceGroups struct {
 	Resources []ResourceGroup `json:"resources,omitempty"`
 }
 
-
 // UnmarshalResourceGroups unmarshals an instance of ResourceGroups from the specified map of raw messages.
 func UnmarshalResourceGroups(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(ResourceGroups)
@@ -9645,7 +9609,6 @@ type ResourceLocator struct {
 	// Resource ID.
 	ResourceID *string `json:"resource_id,omitempty"`
 }
-
 
 // UnmarshalResourceLocator unmarshals an instance of ResourceLocator from the specified map of raw messages.
 func UnmarshalResourceLocator(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -9709,7 +9672,6 @@ type SchematicsWorkspace struct {
 	// Catalog reference.
 	CatalogRef *SchematicsWorkspaceCatalogRef `json:"catalog_ref,omitempty"`
 }
-
 
 // UnmarshalSchematicsWorkspace unmarshals an instance of SchematicsWorkspace from the specified map of raw messages.
 func UnmarshalSchematicsWorkspace(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -9790,7 +9752,6 @@ type SchematicsWorkspaceCatalogRef struct {
 	ItemURL *string `json:"item_url,omitempty"`
 }
 
-
 // UnmarshalSchematicsWorkspaceCatalogRef unmarshals an instance of SchematicsWorkspaceCatalogRef from the specified map of raw messages.
 func UnmarshalSchematicsWorkspaceCatalogRef(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(SchematicsWorkspaceCatalogRef)
@@ -9827,7 +9788,6 @@ type SchematicsWorkspaceRuntimeData struct {
 	// URL path to log store.
 	LogStoreURL *string `json:"log_store_url,omitempty"`
 }
-
 
 // UnmarshalSchematicsWorkspaceRuntimeData unmarshals an instance of SchematicsWorkspaceRuntimeData from the specified map of raw messages.
 func UnmarshalSchematicsWorkspaceRuntimeData(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -9885,7 +9845,6 @@ type SchematicsWorkspaceSearchResult struct {
 	// Resulting objects.
 	Resources []SchematicsWorkspace `json:"resources,omitempty"`
 }
-
 
 // UnmarshalSchematicsWorkspaceSearchResult unmarshals an instance of SchematicsWorkspaceSearchResult from the specified map of raw messages.
 func UnmarshalSchematicsWorkspaceSearchResult(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -9951,7 +9910,6 @@ type SchematicsWorkspaceTemplateRepo struct {
 	RepoShaValue *string `json:"repo_sha_value,omitempty"`
 }
 
-
 // UnmarshalSchematicsWorkspaceTemplateRepo unmarshals an instance of SchematicsWorkspaceTemplateRepo from the specified map of raw messages.
 func UnmarshalSchematicsWorkspaceTemplateRepo(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(SchematicsWorkspaceTemplateRepo)
@@ -9992,7 +9950,6 @@ type SchematicsWorkspaceWorkspaceStatus struct {
 	Locked *bool `json:"locked,omitempty"`
 }
 
-
 // UnmarshalSchematicsWorkspaceWorkspaceStatus unmarshals an instance of SchematicsWorkspaceWorkspaceStatus from the specified map of raw messages.
 func UnmarshalSchematicsWorkspaceWorkspaceStatus(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(SchematicsWorkspaceWorkspaceStatus)
@@ -10026,7 +9983,6 @@ type Script struct {
 	// Optional value indicating if this script is scoped to a namespace or the entire cluster.
 	Scope *string `json:"scope,omitempty"`
 }
-
 
 // UnmarshalScript unmarshals an instance of Script from the specified map of raw messages.
 func UnmarshalScript(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -10129,7 +10085,6 @@ type State struct {
 	Previous *string `json:"previous,omitempty"`
 }
 
-
 // UnmarshalState unmarshals an instance of State from the specified map of raw messages.
 func UnmarshalState(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(State)
@@ -10165,7 +10120,6 @@ type SyndicationAuthorization struct {
 	// Date and time last updated.
 	LastRun *strfmt.DateTime `json:"last_run,omitempty"`
 }
-
 
 // UnmarshalSyndicationAuthorization unmarshals an instance of SyndicationAuthorization from the specified map of raw messages.
 func UnmarshalSyndicationAuthorization(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -10205,7 +10159,6 @@ type SyndicationCluster struct {
 	// Syndicated to all namespaces on cluster.
 	AllNamespaces *bool `json:"all_namespaces,omitempty"`
 }
-
 
 // UnmarshalSyndicationCluster unmarshals an instance of SyndicationCluster from the specified map of raw messages.
 func UnmarshalSyndicationCluster(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -10254,7 +10207,6 @@ type SyndicationHistory struct {
 	LastRun *strfmt.DateTime `json:"last_run,omitempty"`
 }
 
-
 // UnmarshalSyndicationHistory unmarshals an instance of SyndicationHistory from the specified map of raw messages.
 func UnmarshalSyndicationHistory(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(SyndicationHistory)
@@ -10288,7 +10240,6 @@ type SyndicationResource struct {
 	// Feature information.
 	Authorization *SyndicationAuthorization `json:"authorization,omitempty"`
 }
-
 
 // UnmarshalSyndicationResource unmarshals an instance of SyndicationResource from the specified map of raw messages.
 func UnmarshalSyndicationResource(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -10369,7 +10320,7 @@ type UpdateOfferingIbmOptions struct {
 // Constants associated with the UpdateOfferingIbmOptions.ApprovalType property.
 // Type of approval, ibm or public.
 const (
-	UpdateOfferingIbmOptions_ApprovalType_Ibm = "ibm"
+	UpdateOfferingIbmOptions_ApprovalType_Ibm    = "ibm"
 	UpdateOfferingIbmOptions_ApprovalType_Public = "public"
 )
 
@@ -10377,16 +10328,16 @@ const (
 // Approve (true) or disapprove (false).
 const (
 	UpdateOfferingIbmOptions_Approved_False = "false"
-	UpdateOfferingIbmOptions_Approved_True = "true"
+	UpdateOfferingIbmOptions_Approved_True  = "true"
 )
 
 // NewUpdateOfferingIbmOptions : Instantiate UpdateOfferingIbmOptions
 func (*CatalogManagementV1) NewUpdateOfferingIbmOptions(catalogID string, offeringID string, approvalType string, approved string) *UpdateOfferingIbmOptions {
 	return &UpdateOfferingIbmOptions{
-		CatalogID: core.StringPtr(catalogID),
-		OfferingID: core.StringPtr(offeringID),
+		CatalogID:    core.StringPtr(catalogID),
+		OfferingID:   core.StringPtr(offeringID),
 		ApprovalType: core.StringPtr(approvalType),
-		Approved: core.StringPtr(approved),
+		Approved:     core.StringPtr(approved),
 	}
 }
 
@@ -10438,7 +10389,6 @@ type Validation struct {
 	Target interface{} `json:"target,omitempty"`
 }
 
-
 // UnmarshalValidation unmarshals an instance of Validation from the specified map of raw messages.
 func UnmarshalValidation(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Validation)
@@ -10475,31 +10425,31 @@ type ValidationInstallOptions struct {
 	XAuthRefreshToken *string `json:"X-Auth-Refresh-Token" validate:"required"`
 
 	// Cluster ID.
-	NewClusterID *string `json:"new_cluster_id,omitempty"`
+	NewClusterID *string `json:"cluster_id,omitempty"`
 
 	// Cluster region.
-	NewRegion *string `json:"new_region,omitempty"`
+	NewRegion *string `json:"region,omitempty"`
 
 	// Kube namespace.
-	NewNamespace *string `json:"new_namespace,omitempty"`
+	NewNamespace *string `json:"namespace,omitempty"`
 
 	// Object containing Helm chart override values.
-	NewOverrideValues interface{} `json:"new_override_values,omitempty"`
+	NewOverrideValues interface{} `json:"override_values,omitempty"`
 
 	// Entitlement API Key for this offering.
-	NewEntitlementApikey *string `json:"new_entitlement_apikey,omitempty"`
+	NewEntitlementApikey *string `json:"entitlement_apikey,omitempty"`
 
 	// Schematics workspace configuration.
-	NewSchematics *ClusterRequestBodySchematics `json:"new_schematics,omitempty"`
+	NewSchematics *ClusterRequestBodySchematics `json:"schematics,omitempty"`
 
 	// Script.
-	NewScript *string `json:"new_script,omitempty"`
+	NewScript *string `json:"script,omitempty"`
 
 	// Script ID.
-	NewScriptID *string `json:"new_script_id,omitempty"`
+	NewScriptID *string `json:"script_id,omitempty"`
 
 	// Version locator ID.
-	NewVersionLocatorID *string `json:"new_version_locator_id,omitempty"`
+	NewVersionLocatorID *string `json:"version_locator_id,omitempty"`
 
 	// Allows users to set headers on API requests
 	Headers map[string]string
@@ -10508,7 +10458,7 @@ type ValidationInstallOptions struct {
 // NewValidationInstallOptions : Instantiate ValidationInstallOptions
 func (*CatalogManagementV1) NewValidationInstallOptions(versionLocatorID string, xAuthRefreshToken string) *ValidationInstallOptions {
 	return &ValidationInstallOptions{
-		VersionLocatorID: core.StringPtr(versionLocatorID),
+		VersionLocatorID:  core.StringPtr(versionLocatorID),
 		XAuthRefreshToken: core.StringPtr(xAuthRefreshToken),
 	}
 }
@@ -10636,7 +10586,7 @@ type Version struct {
 	Validation *Validation `json:"validation,omitempty"`
 
 	// Resource requirements.
-	RequiredResources *Resource `json:"required_resources,omitempty"`
+	//RequiredResources *Resource `json:"required_resources,omitempty"`
 
 	// Denotes if single instance can be deployed to a given cluster.
 	SingleInstance *bool `json:"single_instance,omitempty"`
@@ -10677,7 +10627,6 @@ type Version struct {
 	// Version's description.
 	WhitelistedAccounts []string `json:"whitelisted_accounts,omitempty"`
 }
-
 
 // UnmarshalVersion unmarshals an instance of Version from the specified map of raw messages.
 func UnmarshalVersion(m map[string]json.RawMessage, result interface{}) (err error) {
@@ -10746,10 +10695,7 @@ func UnmarshalVersion(m map[string]json.RawMessage, result interface{}) (err err
 	if err != nil {
 		return
 	}
-	err = core.UnmarshalModel(m, "required_resources", &obj.RequiredResources, UnmarshalResource)
-	if err != nil {
-		return
-	}
+
 	err = core.UnmarshalPrimitive(m, "single_instance", &obj.SingleInstance)
 	if err != nil {
 		return
@@ -10824,7 +10770,6 @@ type VersionEntitlement struct {
 	ImageRepoName *string `json:"image_repo_name,omitempty"`
 }
 
-
 // UnmarshalVersionEntitlement unmarshals an instance of VersionEntitlement from the specified map of raw messages.
 func UnmarshalVersionEntitlement(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(VersionEntitlement)
@@ -10855,7 +10800,7 @@ func UnmarshalVersionEntitlement(m map[string]json.RawMessage, result interface{
 // VersionUpdateDescriptor : Indicates if the current version can be upgraded to the version identified by the descriptor.
 type VersionUpdateDescriptor struct {
 	// Account information.
-	VersionLocator *ResourceLocator `json:"version_locator,omitempty"`
+	VersionLocator *string `json:"version_locator,omitempty"`
 
 	// the version number of this version.
 	Version *string `json:"version,omitempty"`
@@ -10877,11 +10822,11 @@ type VersionUpdateDescriptor struct {
 	Messages interface{} `json:"messages,omitempty"`
 }
 
-
 // UnmarshalVersionUpdateDescriptor unmarshals an instance of VersionUpdateDescriptor from the specified map of raw messages.
 func UnmarshalVersionUpdateDescriptor(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(VersionUpdateDescriptor)
-	err = core.UnmarshalModel(m, "version_locator", &obj.VersionLocator, UnmarshalResourceLocator)
+
+	err = core.UnmarshalPrimitive(m, "version_locator", &obj.VersionLocator)
 	if err != nil {
 		return
 	}
